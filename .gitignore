@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+*.py[cod]
+config/.env
+*.db
+*.sqlite3
+.pytest_cache/
+.coverage
+
+# Local runtime data and backups
+/data/
+/backups/
+*.log
+*.pid
+.env
+*.env
+
+# Backup copies
+*.bak
+*.bak-*
+*.bak_*

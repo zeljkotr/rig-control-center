@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIG Control Center</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+<header>
+    <div>
+        <h1>RIG CONTROL CENTER</h1>
+        <p>Centralized Monero Mining Management</p>
+    </div>
+    <button id="refresh">Refresh data</button>
+</header>
+
+<main>
+    <section class="metrics">
+        <article><span>Registered rigs</span><strong id="rig-count">0</strong></article>
+        <article><span>Online rigs</span><strong id="online-count">0</strong></article>
+        <article><span>Mining workers</span><strong id="mining-count">0</strong></article>
+        <article><span>Configured pools</span><strong id="pool-count">0</strong></article>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading">
+            <h2>Mining Configuration</h2>
+            <span>One shared Monero wallet for all rigs</span>
+        </div>
+        <form id="wallet-form" class="form">
+            <div class="form-grid">
+                <label>Global Monero wallet address
+                    <input id="wallet-address" name="wallet_address" required minlength="20" maxlength="150" autocomplete="off">
+                </label>
+            </div>
+            <div class="actions">
+                <button type="submit">Save global wallet</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading">
+            <h2>Mining servers</h2>
+            <button id="show-rig-form">Add server</button>
+        </div>
+
+        <form id="rig-form" class="form hidden">
+            <h3 id="rig-form-title">Register Debian server</h3>
+            <div class="form-grid">
+                <label>Worker name<input name="name" required maxlength="100"></label>
+                <label>IP address / hostname<input name="host" required></label>
+                <label>SSH port<input name="ssh_port" type="number" value="22" min="1" max="65535"></label>
+                <label>SSH username<input name="ssh_username" required></label>
+                <label>Authentication
+                    <select name="ssh_auth_method">
+                        <option value="key">SSH key</option>
+                        <option value="password">Password (probe only)</option>
+                    </select>
+                </label>
+                <label>CPU limit (%)<input name="cpu_limit_percent" type="number" value="75" min="1" max="100"></label>
+                <label>CPU threads (optional)<input name="cpu_threads" type="number" min="1" placeholder="Auto-detect"></label>
+                <label>Pool
+                    <select name="pool_id" id="rig-pool">
+                        <option value="">No pool assigned</option>
+                    </select>
+                </label>
+            </div>
+            <div class="actions">
+                <button type="submit" id="rig-submit">Save server</button>
+                <button type="button" class="secondary" id="cancel-rig">Cancel</button>
+            </div>
+        </form>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr>
+                    <th>Rig</th><th>Worker ID</th><th>Host</th><th>SSH user</th>
+                    <th>CPU threads</th><th>CPU limit</th>
+                    <th>Connection</th><th>Worker status</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="rig-list">
+                    <tr><td colspan="9" class="empty">No servers registered.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading">
+            <h2>Mining pools</h2>
+            <button id="show-pool-form">Add pool</button>
+        </div>
+        <form id="pool-form" class="form hidden">
+            <h3 id="pool-form-title">Register mining pool</h3>
+            <div class="form-grid">
+                <label>Pool name<input name="name" required maxlength="100"></label>
+                <label>Pool address<input name="url" required placeholder="pool.example:3333"></label>
+                <label>Pool type
+                    <select name="pool_type">
+                        <option value="p2pool_mini">P2Pool Mini</option>
+                        <option value="p2pool">P2Pool</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </label>
+                <label class="check"><input name="is_default" type="checkbox"> Default pool</label>
+            </div>
+            <div class="actions">
+                <button type="submit" id="pool-submit">Save pool</button>
+                <button type="button" class="secondary" id="cancel-pool">Cancel</button>
+            </div>
+        </form>
+        <div id="pool-list" class="pool-list"></div>
+    </section>
+
+    <section class="panel">
+        <h2>Activity</h2>
+        <div id="activity" class="activity">RIG Control Center initialized.</div>
+    </section>
+</main>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/monitoring.js"></script>
+</body>
+</html>
